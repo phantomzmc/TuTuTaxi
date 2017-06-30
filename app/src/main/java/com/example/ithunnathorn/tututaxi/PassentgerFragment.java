@@ -7,9 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
+import com.koushikdutta.ion.Response;
 
 
 /**
@@ -33,6 +39,8 @@ public class PassentgerFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
 
     ImageView imageView;
+    Button button2;
+    TextView textView2;
 
     public PassentgerFragment() {
         // Required empty public constructor
@@ -72,6 +80,24 @@ public class PassentgerFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_passentger, container, false);
         imageView = (ImageView) view.findViewById(R.id.imageView);
         Glide.with(this).load("http://topicstock.pantip.com/blueplanet/topicstock/2011/11/E11388431/E11388431-13.jpg").into(imageView);
+
+        textView2 = (TextView)view.findViewById(R.id.textView2);
+        button2 = (Button)view.findViewById(R.id.button2);
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Ion.with(PassentgerFragment.this.getContext())
+                        .load("http://www.mocky.io/v2/59560b9e2900001d02cd716c")
+                        .asJsonObject()
+                        .setCallback(new FutureCallback<JsonObject>() {
+                            @Override
+                            public void onCompleted(Exception e, JsonObject result) {
+                               String name = result.get("name").getAsString();
+                               textView2.setText(name);
+                            }
+                        });
+            }
+        });
         return view;
     }
 
