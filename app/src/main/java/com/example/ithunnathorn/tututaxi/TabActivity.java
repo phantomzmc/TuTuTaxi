@@ -8,16 +8,19 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class TabActivity extends AppCompatActivity
         implements PassentgerFragment.OnFragmentInteractionListener
         ,DriverFragment.OnFragmentInteractionListener
-        ,HelpFragment.OnFragmentInteractionListener{
+        ,HelpFragment.OnFragmentInteractionListener {
 
     BottomNavigationView navigation;
 
     PassentgerFragment passentgerFragment;
     DriverFragment driverFragment;
     HelpFragment helpFragment;
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -32,6 +35,7 @@ public class TabActivity extends AppCompatActivity
                     }
                     if (passentgerFragment == null){
                         passentgerFragment = new PassentgerFragment();
+                        passentgerFragment.setArguments(getIntent().getExtras());
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_contrainer,passentgerFragment).commit();
                     return true;
@@ -41,6 +45,7 @@ public class TabActivity extends AppCompatActivity
                     }
                     if (driverFragment == null){
                         driverFragment = new DriverFragment();
+                        driverFragment.setArguments(getIntent().getExtras());
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_contrainer,driverFragment).commit();
                     return true;
@@ -50,6 +55,7 @@ public class TabActivity extends AppCompatActivity
                     }
                     if (helpFragment == null){
                         helpFragment = new HelpFragment();
+                        helpFragment.setArguments(getIntent().getExtras());
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_contrainer,helpFragment).commit();
                     return true;
