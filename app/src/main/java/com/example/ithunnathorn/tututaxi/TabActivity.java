@@ -8,16 +8,21 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class TabActivity extends AppCompatActivity
         implements PassentgerFragment.OnFragmentInteractionListener
         ,DriverFragment.OnFragmentInteractionListener
-        ,HelpFragment.OnFragmentInteractionListener{
+        ,HelpFragment.OnFragmentInteractionListener
+        ,MapFragment.OnFragmentInteractionListener{
 
     BottomNavigationView navigation;
 
     PassentgerFragment passentgerFragment;
     DriverFragment driverFragment;
     HelpFragment helpFragment;
+    MapFragment mapFragment;
+
 
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -32,6 +37,7 @@ public class TabActivity extends AppCompatActivity
                     }
                     if (passentgerFragment == null){
                         passentgerFragment = new PassentgerFragment();
+                        passentgerFragment.setArguments(getIntent().getExtras());
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_contrainer,passentgerFragment).commit();
                     return true;
@@ -41,17 +47,29 @@ public class TabActivity extends AppCompatActivity
                     }
                     if (driverFragment == null){
                         driverFragment = new DriverFragment();
+                        driverFragment.setArguments(getIntent().getExtras());
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_contrainer,driverFragment).commit();
                     return true;
-                case R.id.navigation_notifications:
-                    if (navigation.getSelectedItemId() == R.id.navigation_notifications){
+//                case R.id.navigation_notifications:
+//                    if (navigation.getSelectedItemId() == R.id.navigation_notifications){
+//                        return true;
+//                    }
+//                    if (helpFragment == null){
+//                        helpFragment = new HelpFragment();
+//                        helpFragment.setArguments(getIntent().getExtras());
+//                    }
+//                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_contrainer,helpFragment).commit();
+//                    return true;
+                case R.id.navigation_maps:
+                    if (navigation.getSelectedItemId() == R.id.navigation_maps){
                         return true;
                     }
-                    if (helpFragment == null){
-                        helpFragment = new HelpFragment();
+                    if (mapFragment == null){
+                        mapFragment = new MapFragment();
+                        mapFragment.setArguments(getIntent().getExtras());
                     }
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_contrainer,helpFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragmant_contrainer,mapFragment).commit();
                     return true;
             }
             return false;

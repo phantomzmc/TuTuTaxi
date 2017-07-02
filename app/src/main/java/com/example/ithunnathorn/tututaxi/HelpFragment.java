@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 
 /**
@@ -26,6 +27,10 @@ public class HelpFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    View view;
+    ListView listView;
+    String[] datas = {"apple","ios","android","google","youtube","apple","ios","android","google","youtube","apple","ios","android","google","youtube"};
 
     private OnFragmentInteractionListener mListener;
 
@@ -64,7 +69,11 @@ public class HelpFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_help, container, false);
+        view = inflater.inflate(R.layout.fragment_help, container, false);
+        listView = (ListView) view.findViewById(R.id.listView);
+        listView.setAdapter(new ContentAdapter(getContext(),datas));
+
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

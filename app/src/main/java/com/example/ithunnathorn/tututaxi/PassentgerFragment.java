@@ -1,21 +1,33 @@
 package com.example.ithunnathorn.tututaxi;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 import com.koushikdutta.ion.Response;
+
+import static android.content.ContentValues.TAG;
 
 
 /**
@@ -40,7 +52,12 @@ public class PassentgerFragment extends Fragment {
 
     ImageView imageView;
     Button button2;
+    Button mapButton;
+    Button loginButton;
     TextView textView2;
+    View view;
+
+
 
     public PassentgerFragment() {
         // Required empty public constructor
@@ -71,35 +88,62 @@ public class PassentgerFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_passentger, container, false);
-        imageView = (ImageView) view.findViewById(R.id.imageView);
-        Glide.with(this).load("http://topicstock.pantip.com/blueplanet/topicstock/2011/11/E11388431/E11388431-13.jpg").into(imageView);
 
-        textView2 = (TextView)view.findViewById(R.id.textView2);
-        button2 = (Button)view.findViewById(R.id.button2);
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Ion.with(PassentgerFragment.this.getContext())
-                        .load("http://www.mocky.io/v2/59560b9e2900001d02cd716c")
-                        .asJsonObject()
-                        .setCallback(new FutureCallback<JsonObject>() {
-                            @Override
-                            public void onCompleted(Exception e, JsonObject result) {
-                               String name = result.get("name").getAsString();
-                               textView2.setText(name);
-                            }
-                        });
-            }
-        });
+        if (view == null) {
+            // Inflate the layout for this fragment
+            view = inflater.inflate(R.layout.fragment_passentger, container, false);
+            imageView = (ImageView) view.findViewById(R.id.imageView);
+            textView2 = (TextView) view.findViewById(R.id.textView2);
+            button2 = (Button) view.findViewById(R.id.button2);
+            button2.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Ion.with(PassentgerFragment.this.getContext())
+                            .load("http://www.mocky.io/v2/59560b9e2900001d02cd716c")
+                            .asJsonObject()
+                            .setCallback(new FutureCallback<JsonObject>() {
+                                @Override
+                                public void onCompleted(Exception e, JsonObject result) {
+                                    String name = result.get("name").getAsString();
+                                    textView2.setText(name);
+                                }
+                            });
+                }
+
+            });
+            mapButton = (Button) view.findViewById(R.id.mapButton);
+            mapButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PassentgerFragment.this.getContext(),MapActivity.class);
+                    startActivity(intent);
+                }
+            });
+            loginButton = (Button) view.findViewById(R.id.loginButton);
+            loginButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(PassentgerFragment.this.getContext(),LoginActivity.class);
+                    startActivity(intent);
+                }
+            });
+            Glide.with(this)
+                    .load("http://goo.gl/gEgYUd")
+                    .skipMemoryCache(false)
+                    .into(imageView);
+        }
         return view;
     }
+
+
+
 
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
